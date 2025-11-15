@@ -7,15 +7,19 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+
+# Build outputs
 dist
 dist-ssr
-*.local
+build
 
-# ENV files and exception
+# Environment files
 .env
 .env.*
 !.env.sample
+!.env.example
 
 # Editor directories and files
 .vscode/*
@@ -27,3 +31,45 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# ====================================
+# USER UPLOADS - DO NOT COMMIT!
+# ====================================
+uploads/
+backend/uploads/
+
+# Keep the folder structure in Git with a .gitkeep file
+!uploads/.gitkeep
+!backend/uploads/.gitkeep
+
+# ====================================
+# OS Files
+# ====================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ====================================
+# Testing & Coverage
+# ====================================
+coverage/
+*.lcov
+.nyc_output
+
+# ====================================
+# Misc
+# ====================================
+*.local
+.cache
+.temp
+tmp/

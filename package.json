@@ -8,7 +8,7 @@
     "start": "cd backend && pnpm start"
   },
   "keywords": [],
-  "author": "",
+  "author": "Dhrubajyoti Bhattacharjee",
   "license": "Apache-2.0",
   "packageManager": "pnpm@10.22.0"
 }

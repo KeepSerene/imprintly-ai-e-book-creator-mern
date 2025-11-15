@@ -2,13 +2,14 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
+  "type": "commonjs",
   "main": "./src/server.js",
   "scripts": {
     "start": "node ./src/server.js",
     "dev": "node --env-file=.env --watch ./src/server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Dhrubajyoti Bhattacharjee",
   "license": "Apache-2.0",
   "packageManager": "pnpm@10.22.0",
   "dependencies": {
