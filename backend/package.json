@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/server.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "dev": "node --env-file=.env --watch ./src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@10.22.0",
+  "dependencies": {
+    "@google/genai": "^1.29.1",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "docx": "^9.5.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "markdown-it": "^14.1.0",
+    "mongoose": "^8.19.4",
+    "multer": "^2.0.2",
+    "pdfkit": "^0.17.2"
+  }
+}

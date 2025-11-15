@@ -1,0 +1,14 @@
+{
+  "name": "imprintly",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd backend && pnpm install && cd ../frontend && pnpm install && pnpm run build",
+    "start": "cd backend && pnpm start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@10.22.0"
+}
