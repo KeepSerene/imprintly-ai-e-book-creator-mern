@@ -3,8 +3,9 @@ const {
   getProfile,
   updateProfile,
 } = require("../controllers/profile.controller");
+const { authenticate } = require("../middlewares/auth.middleware");
 
-router.get("/", getProfile);
-router.put("/update", updateProfile);
+router.get("/", authenticate, getProfile);
+router.put("/", authenticate, updateProfile);
 
 module.exports = router;
