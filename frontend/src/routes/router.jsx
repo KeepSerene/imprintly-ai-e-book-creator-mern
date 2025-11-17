@@ -19,11 +19,11 @@ const router = createBrowserRouter([
         element: <LandingPage />,
       },
       {
-        path: "sign-up",
+        path: "register",
         element: <SignUpPage />,
       },
       {
-        path: "sign-in",
+        path: "login",
         element: <SignInPage />,
       },
       {
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "book/:bookId",
+        path: "books/:bookId",
         element: (
           <ProtectedRoute>
             <BookPage />
@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "edit/:bookId",
+        path: "books/:bookId/edit",
         element: (
           <ProtectedRoute>
             <EditBookPage />
