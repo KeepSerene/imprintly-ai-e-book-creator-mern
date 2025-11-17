@@ -37,8 +37,7 @@ export const TESTIMONIALS = [
     title: "Aspiring Novelist",
     quote:
       "I never imagined writing a book could feel this accessible. This tool keeps me motivated.",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop",
+    avatarSrc: "/images/aarav-sharma.jpg",
     rating: 5,
   },
   {
@@ -46,8 +45,7 @@ export const TESTIMONIALS = [
     title: "Self-published Author",
     quote:
       "I've published two eBooks in half the time it usually takes me. The AI assist is a game changer.",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+    avatarSrc: "/images/sarah-lee.jpg",
     rating: 5,
   },
   {
@@ -55,8 +53,7 @@ export const TESTIMONIALS = [
     title: "Content Strategist",
     quote:
       "The export feature and reader preview make editing feel effortless. It's now part of my workflow.",
-    avatarUrl:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
+    avatarSrc: "/images/andrew-smith.jpg",
     rating: 5,
   },
 ];

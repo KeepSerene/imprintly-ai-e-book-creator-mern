@@ -78,7 +78,10 @@ async function generateBookOutline(req, res) {
     const endIndex = text.lastIndexOf("]");
 
     if (startIndex === -1 || endIndex === -1 || startIndex >= endIndex) {
-      console.error("Could not find JSON array in the AI response", text);
+      console.error(
+        "Could not find JSON array in the AI response",
+        text.slice(0, 1000)
+      );
 
       return res.status(500).json({
         error: "Could not parse the AI response - no JSON array found!",

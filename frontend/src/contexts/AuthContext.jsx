@@ -14,13 +14,15 @@ export function AuthContextProvider({ children }) {
     setUser(userData);
   };
 
-  const singOut = () => {
+  const singOut = (onSignout) => {
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("user");
     setIsAuthenticated(false);
     setUser(null);
-    window.location.href = "/";
+
+    // consumes can pass this function to handle navigation
+    onSignout?.();
   };
 
   const checkAuthStatus = () => {

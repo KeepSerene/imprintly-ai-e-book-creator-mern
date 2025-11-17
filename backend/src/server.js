@@ -43,25 +43,23 @@ app.use((err, req, res, next) => {
     }
 
     return res.status(400).json({ error: err.message });
-  } else if (err) {
-    return res.status(400).json({ error: err.message });
   }
 
-  next();
+  // delegate non-multer errors to the general error handler
+  return next(err);
 });
 
 // GENERAL ERROR HANDLER
 app.use((err, req, res, next) => {
   console.error("Unhandled error:", err);
 
-  // Don't send another response if headers already sent
+  // don't send another response if headers already sent
   if (res.headersSent) {
     return next(err);
   }
 
   res.status(500).json({
     error: "Something went wrong!",
-    // Show details only in development
     ...(ENV.NODE_ENV === "development" && { details: err.message }),
   });
 });

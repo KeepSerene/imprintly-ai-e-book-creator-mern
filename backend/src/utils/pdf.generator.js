@@ -460,7 +460,7 @@ async function generatePdf(book, res) {
         .stroke("#4f46e5");
 
       // PROCESS CHAPTERS
-      book.chapters.forEach((chapter, index) => {
+      (book?.chapters || []).forEach((chapter, index) => {
         try {
           doc.addPage();
 

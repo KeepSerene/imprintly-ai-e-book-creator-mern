@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { BookOpen, LogOut, Menu, X } from "lucide-react";
 import ProfileMenu from "./ProfileMenu";
 
@@ -11,6 +11,7 @@ const navLinks = [
 
 function Navbar() {
   const { isAuthenticated, user, signOut } = useAuthContext();
+  const navigate = useNavigate();
 
   const [activeUrlHash, setActiveUrlHash] = useState(window.location.hash);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -54,6 +55,10 @@ function Navbar() {
     } text-sm font-medium rounded-lg px-4 py-2.5 transition-colors duration-200 hover:bg-violet-50 hover:text-violet-600 focus-visible:bg-violet-50 focus-visible:text-violet-600`;
   };
 
+  const handleSignout = () => {
+    signOut(() => navigate("/", { replace: true }));
+  };
+
   return (
     <header className="bg-white/60 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl h-16 px-6 lg:px-8 mx-auto flex justify-between items-center gap-4">
@@ -88,7 +93,7 @@ function Navbar() {
               }}
               avatarUrl={user.avatar}
               username={user.name}
-              onSignout={signOut}
+              onSignout={handleSignout}
               userRole={user.role}
             />
           ) : (
@@ -158,7 +163,7 @@ function Navbar() {
 
                   <button
                     type="button"
-                    onClick={signOut}
+                    onClick={handleSignout}
                     className="w-full text-red-600 text-sm font-medium rounded-lg flex justify-center items-center gap-x-2 transition-colors duration-200 hover:bg-red-50 focus-visible:bg-red-50"
                   >
                     <LogOut className="size-4" />
