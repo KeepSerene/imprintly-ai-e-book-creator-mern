@@ -1,0 +1,28 @@
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+export const API_ENDPOINTS = {
+  AUTH: {
+    REGISTER: "/api/auth/register",
+    LOGIN: "/api/auth/login",
+  },
+  PROFILE: {
+    GET: "/api/profile",
+    EDIT: "/api/profile",
+  },
+  BOOKS: {
+    GET_BOOKS: "/api/books",
+    GET_BOOK_BY_ID: "/api/books",
+    CREATE_BOOK: "/api/books",
+    UPDATE_BOOK_CONTENT: "/api/books",
+    UPDATE_BOOK_COVER: "/api/books",
+    DELETE_BOOK: "/api/books",
+  },
+  AI: {
+    GENERATE_OUTLINE: "/api/ai/generate-book-outline",
+    GENERATE_CHAPTER_CONTENT: "/api/ai/generate-chapter-content",
+  },
+  EXPORTS: {
+    DOCX: "/api/exports",
+    PDF: "/api/exports",
+  },
+};

@@ -1,12 +1,14 @@
 const express = require("express");
 const cors = require("cors");
-const ENV = require("./configs/env");
+const multer = require("multer");
 const path = require("path");
+const ENV = require("./configs/env");
 const { connectToDB } = require("./configs/db");
 const authRouter = require("./routes/auth.route");
 const profileRouter = require("./routes/profile.route");
 const booksRouter = require("./routes/books.route");
 const aiRouter = require("./routes/ai.route");
+const exportsRouter = require("./routes/exports.route");
 
 const app = express();
 
@@ -15,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // for form data
 app.use(
   cors({
-    origin: ENV.CLIENT_URL || "*",
+    origin: ENV.NODE_ENV === "production" ? ENV.CLIENT_URL : "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -26,11 +28,12 @@ app.use("/api/auth", authRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/books", booksRouter);
 app.use("/api/ai", aiRouter);
+app.use("/api/exports", exportsRouter);
 
 // Static folder for user uploads - serve from backend/uploads
-app.use("/backend/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
-// Error handling for multer
+// ERROR HANDLING - Multer specific errors
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     if (err.code === "LIMIT_FILE_SIZE") {
@@ -45,6 +48,22 @@ app.use((err, req, res, next) => {
   }
 
   next();
+});
+
+// GENERAL ERROR HANDLER
+app.use((err, req, res, next) => {
+  console.error("Unhandled error:", err);
+
+  // Don't send another response if headers already sent
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  res.status(500).json({
+    error: "Something went wrong!",
+    // Show details only in development
+    ...(ENV.NODE_ENV === "development" && { details: err.message }),
+  });
 });
 
 // Start server

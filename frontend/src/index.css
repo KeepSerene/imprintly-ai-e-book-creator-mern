@@ -1,16 +1,33 @@
 @import url("https://fonts.googleapis.com/css2?family=Elms+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
 @import "tailwindcss";
 
 @theme {
   --color-primary: #ff9324;
   --color-bg: #fcfbfc;
   --font-display: "Elms Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
   --breakpoint-3xl: 1920px;
 }
 
 @layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
-    background-color: var(--color-bg);
-    font-family: var(--font-display);
+    @apply bg-bg font-display caret-violet-500 selection:bg-violet-500/30;
+
+    scrollbar-width: thin;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+
+  button:disabled,
+  [role="button"]:disabled {
+    @apply cursor-not-allowed;
   }
 }

@@ -1,5 +1,12 @@
+import { Hero, Navbar } from "../components";
+
 function LandingPage() {
-  return <div>LandingPage</div>;
+  return (
+    <main>
+      <Navbar />
+      <Hero />
+    </main>
+  );
 }
 
 export default LandingPage;
