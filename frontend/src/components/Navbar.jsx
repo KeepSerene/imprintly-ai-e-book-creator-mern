@@ -26,7 +26,7 @@ function Navbar() {
     return () => window.removeEventListener("hashchange", updateUrlHash);
   }, []);
 
-  // Close dropdown menu when clicked outside
+  // Close profile dropdown menu when clicked outside
   useEffect(() => {
     const handleOutsideClicks = () => {
       if (isProfileMenuOpen) {
@@ -136,7 +136,12 @@ function Navbar() {
           {/* Navigation */}
           <nav className="p-4 grid grid-cols-1 gap-y-1">
             {navLinks.map(({ label, hash }) => (
-              <a key={label} href={hash} className={getSmScrNavLinkClass(hash)}>
+              <a
+                key={label}
+                href={hash}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={getSmScrNavLinkClass(hash)}
+              >
                 {label}
               </a>
             ))}

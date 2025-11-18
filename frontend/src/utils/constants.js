@@ -6,35 +6,39 @@ export const FEATURES = [
     description:
       "Generate ideas, outlines, and chapter drafts with smart AI support.",
     icon: Lightbulb,
-    gradient: "from-violet-500 to-purple-600",
+    bgGradientColors: "from-violet-500 to-purple-600",
+    shadowColor: "shadow-violet-500/50",
   },
   {
     title: "Live Reader Preview",
     description:
       "View your book in a distraction-free reader mode with adjustable fonts.",
     icon: BookOpen,
-    gradient: "from-blue-500 to-cyan-600",
+    bgGradientColors: "from-blue-500 to-cyan-600",
+    shadowColor: "shadow-blue-500/50",
   },
   {
     title: "Instant Export",
     description:
       "Download your book in DOCX or PDF with a single click—no setup required.",
     icon: Download,
-    gradient: "from-emerald-500 to-teal-600",
+    bgGradientColors: "from-emerald-500 to-teal-600",
+    shadowColor: "shadow-emerald-500/50",
   },
   {
     title: "Project Dashboard",
     description:
       "Manage drafts, track progress, and organize all your books in one place.",
     icon: Library,
-    gradient: "from-pink-500 to-rose-600",
+    bgGradientColors: "from-pink-500 to-rose-600",
+    shadowColor: "shadow-pink-500/50",
   },
 ];
 
 export const TESTIMONIALS = [
   {
     username: "Aarav Sharma",
-    title: "Aspiring Novelist",
+    designation: "Aspiring Novelist",
     quote:
       "I never imagined writing a book could feel this accessible. This tool keeps me motivated.",
     avatarSrc: "/images/aarav-sharma.jpg",
@@ -42,7 +46,7 @@ export const TESTIMONIALS = [
   },
   {
     username: "Sarah Lee",
-    title: "Self-published Author",
+    designation: "Self-published Author",
     quote:
       "I've published two eBooks in half the time it usually takes me. The AI assist is a game changer.",
     avatarSrc: "/images/sarah-lee.jpg",
@@ -50,7 +54,7 @@ export const TESTIMONIALS = [
   },
   {
     username: "Andrew Smith",
-    title: "Content Strategist",
+    designation: "Content Strategist",
     quote:
       "The export feature and reader preview make editing feel effortless. It's now part of my workflow.",
     avatarSrc: "/images/andrew-smith.jpg",

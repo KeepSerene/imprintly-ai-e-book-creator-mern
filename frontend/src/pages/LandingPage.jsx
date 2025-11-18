@@ -1,10 +1,13 @@
-import { Hero, Navbar } from "../components";
+import { Features, Footer, Hero, Navbar, Testimonials } from "../components";
 
 function LandingPage() {
   return (
     <main>
       <Navbar />
       <Hero />
+      <Features />
+      <Testimonials />
+      <Footer />
     </main>
   );
 }
