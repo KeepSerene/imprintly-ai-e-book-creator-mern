@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useAuthContext } from "../contexts/AuthContext";
+import { useAuthContext } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router";
-import { BookOpen, LogOut, Menu, X } from "lucide-react";
-import ProfileMenu from "./ProfileMenu";
+import { LogOut, Menu, PencilLine, X } from "lucide-react";
+import ProfileMenu from "../ProfileMenu";
 
 const navLinks = [
   { label: "Features", hash: "#features" },
@@ -10,7 +10,7 @@ const navLinks = [
 ];
 
 function Navbar() {
-  const { isAuthenticated, user, signOut } = useAuthContext();
+  const { isAuthenticated, user, unauthenticateUser } = useAuthContext();
   const navigate = useNavigate();
 
   const [activeUrlHash, setActiveUrlHash] = useState(window.location.hash);
@@ -56,7 +56,7 @@ function Navbar() {
   };
 
   const handleSignout = () => {
-    signOut(() => navigate("/", { replace: true }));
+    unauthenticateUser(() => navigate("/", { replace: true }));
   };
 
   return (
@@ -65,7 +65,7 @@ function Navbar() {
         {/* Logo */}
         <Link to="/" className="inline-flex items-center gap-x-2.5 group">
           <span className="size-9 bg-linear-to-br from-violet-400 to-purple-500 rounded-xl shadow-lg shadow-violet-500/20 inline-flex justify-center items-center transition-all duration-300 group-hover:shadow-violet-500/40 group-focus-visible:shadow-violet-500/40 group-hover:scale-105 group-focus-visible:scale-105">
-            <BookOpen className="size-5 text-white" />
+            <PencilLine className="size-5 text-white" />
           </span>
 
           <span className="text-xl font-semibold text-gray-900 tracking-tight">
@@ -91,10 +91,9 @@ function Navbar() {
                 event.stopPropagation();
                 setIsProfileMenuOpen(!isProfileMenuOpen);
               }}
-              avatarUrl={user.avatar}
-              username={user.name}
-              onSignout={handleSignout}
-              userRole={user.role}
+              avatarUrl={user?.avatar}
+              username={user?.name}
+              signoutCallback={handleSignout}
             />
           ) : (
             <>

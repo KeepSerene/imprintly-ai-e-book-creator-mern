@@ -1,5 +1,5 @@
 import { Quote, Star } from "lucide-react";
-import { TESTIMONIALS } from "../utils/constants";
+import { TESTIMONIALS } from "../../utils/constants";
 
 const stats = [
   {

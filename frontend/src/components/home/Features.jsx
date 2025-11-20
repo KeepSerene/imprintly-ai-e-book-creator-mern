@@ -1,5 +1,5 @@
-import { useAuthContext } from "../contexts/AuthContext";
-import { FEATURES } from "../utils/constants";
+import { useAuthContext } from "../../contexts/AuthContext";
+import { FEATURES } from "../../utils/constants";
 import { Link } from "react-router";
 import { ArrowRight, ChevronRight } from "lucide-react";
 

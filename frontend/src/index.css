@@ -3,7 +3,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #ff9324;
+  /* --color-primary: #ff9324; */
   --color-bg: #fcfbfc;
   --font-display: "Elms Sans", sans-serif;
   --font-mono: "IBM Plex Mono", monospace;
@@ -22,7 +22,7 @@
   }
 
   ::-webkit-scrollbar {
-    @apply w-1 bg-violet-50;
+    @apply w-1 h-1 bg-violet-50;
   }
 
   ::-webkit-scrollbar-thumb {

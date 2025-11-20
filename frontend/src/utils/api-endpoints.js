@@ -10,12 +10,12 @@ export const API_ENDPOINTS = {
     EDIT: "/api/profile",
   },
   BOOKS: {
-    GET_BOOKS: "/api/books",
-    GET_BOOK_BY_ID: "/api/books",
-    CREATE_BOOK: "/api/books",
-    UPDATE_BOOK_CONTENT: "/api/books",
-    UPDATE_BOOK_COVER: "/api/books",
-    DELETE_BOOK: "/api/books",
+    GET_ALL: "/api/books",
+    GET_BY_ID: "/api/books",
+    CREATE: "/api/books",
+    UPDATE_CONTENT: "/api/books",
+    UPDATE_COVER: "/api/books",
+    DELETE: "/api/books",
   },
   AI: {
     GENERATE_OUTLINE: "/api/ai/generate-book-outline",

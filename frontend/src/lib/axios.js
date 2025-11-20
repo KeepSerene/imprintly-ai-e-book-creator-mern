@@ -22,7 +22,7 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (err) => {
-    console.error(err);
+    console.error("Error in Axios request interceptor:", err);
 
     return Promise.reject(err);
   }
@@ -32,7 +32,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (err) => {
-    console.error(err);
+    console.error("Error in Axios response interceptor:", err);
 
     // Handle common erros centrally
     if (err.response) {
