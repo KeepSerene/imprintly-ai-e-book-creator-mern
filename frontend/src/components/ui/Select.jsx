@@ -32,8 +32,8 @@ function Select({ icon: SelectIcon, label, name, options, ...props }) {
           {...props}
         >
           {options.map((option) => (
-            <option key={option.value || option} value={option.value || option}>
-              {option.label || option}
+            <option key={option.value ?? option} value={option.value ?? option}>
+              {option.label ?? option}
             </option>
           ))}
         </select>

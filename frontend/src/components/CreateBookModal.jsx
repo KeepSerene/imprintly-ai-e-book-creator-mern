@@ -84,7 +84,7 @@ function CreateBookModal({ isOpen, onClose, onBookCreate }) {
     setChapters((prev) => [
       ...prev,
       {
-        title: `Chapter ${chapters.length + 1}`,
+        title: `Chapter ${prev.length + 1}`,
         description: "",
       },
     ]);
@@ -116,7 +116,7 @@ function CreateBookModal({ isOpen, onClose, onBookCreate }) {
         data: { book },
       } = await axiosInstance.post(API_ENDPOINTS.BOOKS.CREATE, {
         title: bookTitle,
-        author: user.name || "Unknown Author",
+        author: user?.name || "Unknown Author",
         chapters,
       });
       toast.success("eBook created successfully!");
