@@ -12,7 +12,7 @@ function sanitizeInput(input, maxLength = 500) {
 
   let sanitized = input.trim().slice(0, maxLength);
 
-  // Remove any potential script tags or HTML
+  // remove any potential script tags or HTML
   sanitized = sanitized.replace(/<script[^>]*>.*?<\/script>/gi, "");
   sanitized = sanitized.replace(/<[^>]+>/g, "");
 

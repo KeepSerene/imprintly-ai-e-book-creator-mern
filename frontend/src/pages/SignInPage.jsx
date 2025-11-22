@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
 import { Link, useNavigate, useLocation } from "react-router";
 import toast from "react-hot-toast";
-import { LockKeyhole, Mail, PencilLine } from "lucide-react";
-import { Button, Input } from "../components";
+import { LockKeyhole, Mail } from "lucide-react";
+import { Button, Input, LogoIcon } from "../components";
 import axiosInstance from "../lib/axios";
 import { API_ENDPOINTS } from "../utils/api-endpoints";
 import { validateEmail, validatePassword } from "../utils/helpers";
@@ -112,7 +112,7 @@ function SignInPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-6 sm:mb-8">
           <div className="size-14 sm:size-16 bg-linear-to-br from-violet-400 to-violet-500 rounded-full mx-auto mb-3 sm:mb-4 shadow-md flex justify-center items-center">
-            <PencilLine className="size-7 sm:size-8 text-white" />
+            <LogoIcon className="size-7 sm:size-8 text-white" />
           </div>
 
           <h1 className="text-slate-900 text-2xl sm:text-3xl font-bold">
@@ -131,7 +131,7 @@ function SignInPage() {
           >
             <Input
               type="email"
-              label="Email*"
+              label="Email"
               name="email"
               value={formData.email}
               onChange={handleChange}
@@ -143,7 +143,7 @@ function SignInPage() {
 
             <Input
               type="password"
-              label="Password*"
+              label="Password"
               name="password"
               value={formData.password}
               onChange={handleChange}

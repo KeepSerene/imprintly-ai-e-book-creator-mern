@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router";
-import { LogOut, Menu, PencilLine, X } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 import ProfileMenu from "../ProfileMenu";
+import LogoIcon from "../LogoIcon";
 
 const navLinks = [
   { label: "Features", hash: "#features" },
@@ -65,7 +66,7 @@ function Navbar() {
         {/* Logo */}
         <Link to="/" className="inline-flex items-center gap-x-2.5 group">
           <span className="size-9 bg-linear-to-br from-violet-400 to-purple-500 rounded-xl shadow-lg shadow-violet-500/20 inline-flex justify-center items-center transition-all duration-300 group-hover:shadow-violet-500/40 group-focus-visible:shadow-violet-500/40 group-hover:scale-105 group-focus-visible:scale-105">
-            <PencilLine className="size-5 text-white" />
+            <LogoIcon className="size-5 text-white" />
           </span>
 
           <span className="text-xl font-semibold text-gray-900 tracking-tight">

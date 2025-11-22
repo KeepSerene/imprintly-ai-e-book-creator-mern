@@ -1,6 +1,7 @@
 import { useAuthContext } from "../../contexts/AuthContext";
-import { Globe, PencilLine } from "lucide-react";
+import { Globe } from "lucide-react";
 import { Link } from "react-router";
+import LogoIcon from "../LogoIcon";
 
 const socials = [
   {
@@ -50,7 +51,7 @@ function Footer() {
               className="inline-flex items-center gap-x-2.5 group w-fit"
             >
               <span className="size-9 sm:size-10 bg-linear-to-br from-violet-500 to-purple-600 rounded-xl shadow-lg shadow-violet-500/30 inline-flex justify-center items-center transition-all duration-300 group-hover:shadow-violet-500/50 group-hover:scale-105 group-focus-visible:shadow-violet-500/50 group-focus-visible:scale-105">
-                <PencilLine className="size-4 sm:size-5 text-white" />
+                <LogoIcon className="size-4 sm:size-5 text-white" />
               </span>
 
               <span className="text-lg sm:text-xl font-semibold tracking-tight">
