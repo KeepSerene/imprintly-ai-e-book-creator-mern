@@ -9,6 +9,7 @@ import {
   SignUpPage,
 } from "../pages";
 import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PublicRoute";
 
 const router = createBrowserRouter([
   {
@@ -20,11 +21,19 @@ const router = createBrowserRouter([
       },
       {
         path: "register",
-        element: <SignUpPage />,
+        element: (
+          <PublicRoute>
+            <SignUpPage />
+          </PublicRoute>
+        ),
       },
       {
         path: "login",
-        element: <SignInPage />,
+        element: (
+          <PublicRoute>
+            <SignInPage />
+          </PublicRoute>
+        ),
       },
       {
         path: "dashboard",
