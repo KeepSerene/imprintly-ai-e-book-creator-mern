@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { WRITING_STYLES } from "../utils/constants";
 import toast from "react-hot-toast";
 import axiosInstance from "../lib/axios";
 import { API_ENDPOINTS } from "../utils/api-endpoints";
@@ -33,9 +32,6 @@ function EditBookPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("editor"); // "editor" | "details"
   const [isUploading, setIsUploading] = useState(false);
-  const [isOutlineModalOpen, setIsOutlineModalOpen] = useState(false);
-  const [topic, setTopic] = useState("");
-  const [writingStyle, setWritingStyle] = useState(WRITING_STYLES[0]);
   const [isGenerating, setIsGenerating] = useState(false);
 
   const { bookId } = useParams();
@@ -175,7 +171,7 @@ function EditBookPage() {
       } = await axiosInstance.post(API_ENDPOINTS.AI.GENERATE_CHAPTER_CONTENT, {
         chapterTitle: chapter.title,
         chapterDescription: chapter.description || "",
-        style: writingStyle,
+        style: "Informative",
       });
 
       const updatedChapters = [...book.chapters];
