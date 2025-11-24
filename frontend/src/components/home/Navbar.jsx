@@ -156,7 +156,7 @@ function Navbar() {
                 <div className="px-2 flex items-center gap-x-3">
                   <div className="size-10 bg-linear-to-br from-violet-400 to-violet-500 rounded-xl flex justify-center items-center shrink-0">
                     <span className="text-white text-sm font-semibold">
-                      {user?.name?.charAt(0).toUpperCase() ?? "U"}
+                      {user?.name?.[0]?.toUpperCase() ?? "U"}
                     </span>
                   </div>
 

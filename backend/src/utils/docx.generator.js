@@ -38,8 +38,8 @@ const DOCX_CONFIG = {
     heading: "1a202c",
     body: "000000",
     code: "d63384",
-    codeBlock: "212529",
-    codeBg: "f8f9fa",
+    codeBlock: "e2e8f0",
+    codeBg: "1e293b",
   },
   spacing: {
     paragraphBefore: 200,
@@ -51,12 +51,11 @@ const DOCX_CONFIG = {
   },
 };
 
-// PROCESS INLINE MARKDOWN CONTENT
 function processInlineContent(content) {
   const textRuns = [];
 
   const patterns = [
-    { regex: /`([^`]+)`/g, type: "code" },
+    { regex: /`([^`]+)`/g, type: "code" }, // must be first
     { regex: /\*\*(.+?)\*\*/g, type: "bold" },
     { regex: /\*(.+?)\*/g, type: "italic" },
     { regex: /__(.+?)__/g, type: "bold" },
@@ -107,11 +106,12 @@ function processInlineContent(content) {
       runOptions.italics = true;
       runOptions.font = DOCX_CONFIG.fonts.body;
     } else if (match.type === "code") {
+      // inline code styling
       runOptions.font = DOCX_CONFIG.fonts.code;
       runOptions.size = DOCX_CONFIG.sizes.code * 2;
       runOptions.color = DOCX_CONFIG.colors.code;
       runOptions.shading = {
-        fill: DOCX_CONFIG.colors.codeBg,
+        fill: "f1f5f9",
         type: "clear",
       };
     }
@@ -144,7 +144,6 @@ function processInlineContent(content) {
       ];
 }
 
-// PROCESS MARKDOWN CONTENT TO DOCX PARAGRAPHS
 function processMdContent(mdContent) {
   if (!mdContent || mdContent.trim() === "") {
     return [];
@@ -200,8 +199,26 @@ function processMdContent(mdContent) {
         }
       }
 
-      // HANDLE CODE BLOCKS
+      // Handle code blocks
       if (token.type === "fence" || token.type === "code_block") {
+        // Add language label if present
+        if (token.info && token.info.trim()) {
+          paragraphs.push(
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `Language: ${token.info.trim()}`,
+                  font: DOCX_CONFIG.fonts.body,
+                  size: 16,
+                  color: "64748b",
+                  italics: true,
+                }),
+              ],
+              spacing: { before: 100, after: 50 },
+            })
+          );
+        }
+
         const codeLines = token.content
           .split("\n")
           .filter((line) => line.trim());

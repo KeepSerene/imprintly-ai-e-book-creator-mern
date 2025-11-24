@@ -10,5 +10,8 @@
   "keywords": [],
   "author": "Dhrubajyoti Bhattacharjee",
   "license": "Apache-2.0",
-  "packageManager": "pnpm@10.22.0"
+  "packageManager": "pnpm@10.22.0",
+  "dependencies": {
+    "rehype-sanitize": "^6.0.0"
+  }
 }

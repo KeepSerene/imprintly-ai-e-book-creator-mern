@@ -30,8 +30,8 @@ const PDF_CONFIG = {
     heading: "#1a202c",
     body: "#000000",
     code: "#d63384",
-    codeBlock: "#212529",
-    codeBg: "#f8f9fa",
+    codeBlock: "#e2e8f0",
+    codeBg: "#1e293b",
   },
   margins: {
     top: 72,
@@ -47,12 +47,11 @@ const PDF_CONFIG = {
   },
 };
 
-// PARSE INLINE MARKDOWN FOR PDF
 function parseInlineMarkdown(text) {
   const segments = [];
 
   const patterns = [
-    { regex: /`([^`]+)`/g, type: "code" },
+    { regex: /`([^`]+)`/g, type: "code" }, // must come first to avoid conflicts
     { regex: /\*\*(.+?)\*\*/g, type: "bold" },
     { regex: /\*(.+?)\*/g, type: "italic" },
     { regex: /__(.+?)__/g, type: "bold" },
@@ -103,7 +102,6 @@ function parseInlineMarkdown(text) {
   return segments.length > 0 ? segments : [{ text, type: "plain" }];
 }
 
-// PROCESS MARKDOWN CONTENT FOR PDF
 function processMdContentForPdf(doc, mdContent) {
   if (!mdContent || mdContent.trim() === "") {
     return;
@@ -158,7 +156,7 @@ function processMdContentForPdf(doc, mdContent) {
         }
       }
 
-      // HANDLE CODE BLOCKS
+      // Code blocks
       if (token.type === "fence" || token.type === "code_block") {
         const codeLines = token.content
           .split("\n")
@@ -170,16 +168,33 @@ function processMdContentForPdf(doc, mdContent) {
 
         doc.moveDown(0.5);
 
+        // Add language label if present
+        if (token.info && token.info.trim()) {
+          doc
+            .font(PDF_CONFIG.fonts.body)
+            .fontSize(8)
+            .fillColor("#64748b")
+            .text(
+              `Language: ${token.info.trim()}`,
+              PDF_CONFIG.margins.left + 20,
+              doc.y,
+              { lineBreak: false }
+            );
+          doc.moveDown(0.3);
+        }
+
         codeLines.forEach((line) => {
-          const lineHeight = PDF_CONFIG.sizes.code + 4;
+          const lineHeight = PDF_CONFIG.sizes.code + 6;
+
+          // Dark background for code blocks
           doc
             .rect(
-              PDF_CONFIG.margins.left + 20,
+              PDF_CONFIG.margins.left + 10,
               doc.y,
               doc.page.width -
                 PDF_CONFIG.margins.left -
                 PDF_CONFIG.margins.right -
-                40,
+                20,
               lineHeight
             )
             .fill(PDF_CONFIG.colors.codeBg);
@@ -188,7 +203,7 @@ function processMdContentForPdf(doc, mdContent) {
             .font(PDF_CONFIG.fonts.code)
             .fontSize(PDF_CONFIG.sizes.code)
             .fillColor(PDF_CONFIG.colors.codeBlock)
-            .text(line || " ", PDF_CONFIG.margins.left + 30, doc.y, {
+            .text(line || " ", PDF_CONFIG.margins.left + 20, doc.y, {
               lineBreak: false,
             });
 
@@ -219,6 +234,7 @@ function processMdContentForPdf(doc, mdContent) {
           const segments = parseInlineMarkdown(nextToken.content);
           segments.forEach((segment) => {
             if (segment.type === "code") {
+              // inline code styling
               doc
                 .font(PDF_CONFIG.fonts.code)
                 .fontSize(PDF_CONFIG.sizes.code)

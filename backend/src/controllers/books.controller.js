@@ -91,22 +91,33 @@ async function updateBookContent(req, res) {
       return res.status(404).json({ error: "Book not found!" });
     }
 
-    // Check authorization
+    // check authorization
     if (book.userId.toString() !== req.user.id.toString()) {
       return res
         .status(403)
         .json({ error: "Forbidden: You cannot update this book!" });
     }
 
-    // Validate that we're not allowing userId to be changed
-    if (req.body.userId) {
-      return res.status(400).json({ error: "Cannot change book owner!" });
-    }
+    const updateData = {
+      title: req.body.title,
+      subtitle: req.body.subtitle,
+      author: req.body.author,
+      chapters: req.body.chapters,
+      status: req.body.status,
+      coverImage: req.body.coverImage,
+    };
 
-    // Update book with validation
-    const updatedBook = await Book.findByIdAndUpdate(bookId, req.body, {
-      new: true, // Return updated document
-      runValidators: true, // Run Mongoose validators
+    // remove undefined fields to avoid overwriting with undefined
+    Object.keys(updateData).forEach((key) => {
+      if (updateData[key] === undefined) {
+        delete updateData[key];
+      }
+    });
+
+    // update book with validation
+    const updatedBook = await Book.findByIdAndUpdate(bookId, updateData, {
+      new: true, // return updated document
+      runValidators: true, // run Mongoose validators
     });
 
     return res.status(200).json({
@@ -116,9 +127,17 @@ async function updateBookContent(req, res) {
   } catch (error) {
     console.error("Error updating book content:", error);
 
-    // Handle invalid ObjectId
+    // handle invalid ObjectId
     if (error.name === "CastError") {
       return res.status(400).json({ error: "Invalid book ID format!" });
+    }
+
+    // handle validation errors
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        error: "Validation failed",
+        details: error.message,
+      });
     }
 
     return res.status(500).json({ error: "Internal Server Error!" });

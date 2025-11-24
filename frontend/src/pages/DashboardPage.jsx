@@ -5,7 +5,7 @@ import { API_ENDPOINTS } from "../utils/api-endpoints";
 import toast from "react-hot-toast";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { BookCard, Button, CreateBookModal } from "../components";
-import { Book, BookPlus } from "lucide-react";
+import { Book, BookPlus, PencilLine } from "lucide-react";
 
 // Skeleton loader for book card
 const BookCardSkeleton = () => (
@@ -203,7 +203,7 @@ function DashboardPage() {
             <Button
               type="button"
               onClick={() => setIsCreateBookModalOpen(true)}
-              icon={BookPlus}
+              icon={PencilLine}
             >
               Start Writing
             </Button>
