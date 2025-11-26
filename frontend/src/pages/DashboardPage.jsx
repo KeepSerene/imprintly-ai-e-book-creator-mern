@@ -153,7 +153,7 @@ function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <div className="container max-w-7xl p-4 md:p-6 mx-auto">
+      <main className="container max-w-7xl p-4 md:p-6 mx-auto">
         <header className="mb-6 md:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex-1">
             <h1 className="text-gray-900 text-xl md:text-2xl font-bold mb-1">
@@ -242,7 +242,7 @@ function DashboardPage() {
           onClose={() => setIsCreateBookModalOpen(false)}
           onBookCreate={handleCreateBook}
         />
-      </div>
+      </main>
     </DashboardLayout>
   );
 }

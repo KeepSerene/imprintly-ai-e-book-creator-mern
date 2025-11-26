@@ -16,6 +16,9 @@ export { default as Footer } from "./home/Footer";
 export { default as BookCard } from "./BookCard";
 export { default as CreateBookModal } from "./CreateBookModal";
 
+// Book page component
+export { default as BookView } from "./book-view/BookView";
+
 // Edit book page components
 export { default as ChaptersSidebar } from "./edit-book/ChaptersSidebar";
 export { default as ChapterEditorTab } from "./edit-book/ChapterEditorTab";

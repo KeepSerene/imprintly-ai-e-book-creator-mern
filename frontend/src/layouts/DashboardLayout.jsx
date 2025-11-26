@@ -27,7 +27,7 @@ function DashboardLayout({ children }) {
   };
 
   return (
-    <main className="h-screen bg-gray-50 flex flex-col">
+    <div className="h-screen bg-gray-50 flex flex-col">
       <header className="h-14 md:h-16 bg-white/80 backdrop-blur-md border-b border-gray-200 px-4 md:px-6 flex justify-between items-center sticky top-0 z-20 shrink-0">
         {/* Logo section */}
         <Link
@@ -58,7 +58,7 @@ function DashboardLayout({ children }) {
 
       {/* Main content */}
       <div className="flex-1 overflow-y-auto">{children}</div>
-    </main>
+    </div>
   );
 }
 

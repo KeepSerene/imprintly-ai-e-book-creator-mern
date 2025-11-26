@@ -3,6 +3,7 @@ import {
   BookPage,
   DashboardPage,
   EditBookPage,
+  ErrorPage,
   LandingPage,
   ProfilePage,
   SignInPage,
@@ -14,6 +15,8 @@ import PublicRoute from "./PublicRoute";
 const router = createBrowserRouter([
   {
     path: "/",
+    // root error boundary catches all errors
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -66,6 +69,11 @@ const router = createBrowserRouter([
             <ProfilePage />
           </ProtectedRoute>
         ),
+      },
+      // catch-all for 404s
+      {
+        path: "*",
+        element: <ErrorPage />,
       },
     ],
   },

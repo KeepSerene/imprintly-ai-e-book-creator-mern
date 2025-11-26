@@ -47,3 +47,65 @@ export function validatePassword(password) {
 
   return ""; // valid
 }
+
+export function formatMdContent(content) {
+  return (
+    content
+      // Code blocks (must come before inline code)
+      .replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+        const language = lang || "text";
+
+        return `<pre class="bg-slate-900 text-slate-100 rounded-lg p-4 my-4 overflow-x-auto"><code class="language-${language} text-sm font-mono">${code.trim()}</code></pre>`;
+      })
+      // Inline code
+      .replace(
+        /`([^`]+)`/g,
+        '<code class="bg-slate-100 text-pink-600 px-1.5 py-0.5 rounded text-sm font-mono">$1</code>'
+      )
+      // Headings
+      .replace(
+        /^### (.*$)/gm,
+        "<h3 class='text-xl font-bold mt-6 mb-4 text-slate-900'>$1</h3>"
+      )
+      .replace(
+        /^## (.*$)/gm,
+        "<h2 class='text-2xl font-bold mt-8 mb-4 text-slate-900'>$1</h2>"
+      )
+      .replace(
+        /^# (.*$)/gm,
+        "<h1 class='text-3xl font-bold mt-8 mb-6 text-slate-900'>$1</h1>"
+      )
+      // Bold and italic
+      .replace(
+        /\*\*(.*?)\*\*/g,
+        "<strong class='font-semibold text-slate-900'>$1</strong>"
+      )
+      .replace(/\*(.*?)\*/g, "<em class='italic text-slate-700'>$1</em>")
+      // Blockquote
+      .replace(
+        /^> (.*$)/gm,
+        "<blockquote class='text-slate-700 italic border-l-4 border-violet-500 pl-4 my-4 bg-violet-50/50 py-2 rounded-r'>$1</blockquote>"
+      )
+      // Unordered list
+      .replace(/^\- (.*$)/gm, "<li class='ml-6 mb-2 text-slate-700'>$1</li>")
+      .replace(
+        /(<li class="ml-6 mb-2 text-slate-700">.*<\/li>)/gs,
+        "<ul class='list-disc my-4'>$1</ul>"
+      )
+      // Ordered list
+      .replace(/^\d+\. (.*$)/gm, "<li class='ml-6 mb-2 text-slate-700'>$1</li>")
+      .replace(
+        /(<li class="ml-6 mb-2 text-slate-700">.*<\/li>)/gs,
+        "<ol class='list-decimal my-4'>$1</ol>"
+      )
+      // Paragraph
+      .split("\n\n")
+      .map((paragraph) => {
+        paragraph = paragraph.trim();
+        if (!paragraph) return "";
+        if (paragraph.startsWith("<")) return paragraph;
+        return `<p class="text-slate-700 leading-relaxed mb-4">${paragraph}</p>`;
+      })
+      .join("")
+  );
+}
