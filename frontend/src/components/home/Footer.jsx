@@ -1,15 +1,8 @@
 import { useAuthContext } from "../../contexts/AuthContext";
-// import { Globe } from "lucide-react";
 import { Link } from "react-router";
 import LogoIcon from "../LogoIcon";
 
 const socials = [
-  // {
-  //   href: "https://math-to-dev.vercel.app/",
-  //   ariaLabel: "Visit my portfolio",
-  //   icon: Globe,
-  //   imgSrc: "",
-  // },
   {
     href: "https://github.com/",
     ariaLabel: "Visit GitHub",
@@ -143,7 +136,6 @@ function Footer() {
                 by{" "}
                 <a
                   href="/"
-                  target="_blank"
                   className="text-white transition-all duration-200 hover:underline focus-visible:underline"
                 >
                   @KeepSerene
