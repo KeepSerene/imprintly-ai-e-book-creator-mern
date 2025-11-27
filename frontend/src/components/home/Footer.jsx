@@ -1,30 +1,30 @@
 import { useAuthContext } from "../../contexts/AuthContext";
-import { Globe } from "lucide-react";
+// import { Globe } from "lucide-react";
 import { Link } from "react-router";
 import LogoIcon from "../LogoIcon";
 
 const socials = [
+  // {
+  //   href: "https://math-to-dev.vercel.app/",
+  //   ariaLabel: "Visit my portfolio",
+  //   icon: Globe,
+  //   imgSrc: "",
+  // },
   {
-    href: "https://math-to-dev.vercel.app/",
-    ariaLabel: "Visit my portfolio",
-    icon: Globe,
-    imgSrc: "",
-  },
-  {
-    href: "https://github.com/KeepSerene",
-    ariaLabel: "Visit my GitHub",
+    href: "https://github.com/",
+    ariaLabel: "Visit GitHub",
     icon: null,
     imgSrc: "/social-icons/github.svg",
   },
   {
-    href: "https://www.linkedin.com/in/dhrubajyoti-bhattacharjee-320822318/",
-    ariaLabel: "Visit my LinkedIn",
+    href: "https://www.linkedin.com/",
+    ariaLabel: "Visit LinkedIn",
     icon: null,
     imgSrc: "/social-icons/linkedin.svg",
   },
   {
-    href: "https://x.com/UsualLearner",
-    ariaLabel: "Visit my X (formerly Twitter) page",
+    href: "https://x.com/",
+    ariaLabel: "Visit X (formerly Twitter) page",
     icon: null,
     imgSrc: "/social-icons/x.svg",
   },
@@ -142,7 +142,7 @@ function Footer() {
               <span>
                 by{" "}
                 <a
-                  href="https://github.com/KeepSerene"
+                  href="/"
                   target="_blank"
                   className="text-white transition-all duration-200 hover:underline focus-visible:underline"
                 >
