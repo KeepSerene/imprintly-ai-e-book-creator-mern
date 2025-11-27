@@ -3,16 +3,20 @@ import {
   BookPage,
   DashboardPage,
   EditBookPage,
+  ErrorPage,
   LandingPage,
   ProfilePage,
   SignInPage,
   SignUpPage,
 } from "../pages";
 import ProtectedRoute from "./ProtectedRoute";
+import PublicRoute from "./PublicRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    // root error boundary catches all errors
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -20,11 +24,19 @@ const router = createBrowserRouter([
       },
       {
         path: "register",
-        element: <SignUpPage />,
+        element: (
+          <PublicRoute>
+            <SignUpPage />
+          </PublicRoute>
+        ),
       },
       {
         path: "login",
-        element: <SignInPage />,
+        element: (
+          <PublicRoute>
+            <SignInPage />
+          </PublicRoute>
+        ),
       },
       {
         path: "dashboard",
@@ -57,6 +69,11 @@ const router = createBrowserRouter([
             <ProfilePage />
           </ProtectedRoute>
         ),
+      },
+      // catch-all for 404s
+      {
+        path: "*",
+        element: <ErrorPage />,
       },
     ],
   },

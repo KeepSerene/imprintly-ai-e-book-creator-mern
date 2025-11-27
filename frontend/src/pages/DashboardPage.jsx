@@ -5,7 +5,7 @@ import { API_ENDPOINTS } from "../utils/api-endpoints";
 import toast from "react-hot-toast";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { BookCard, Button, CreateBookModal } from "../components";
-import { Book, BookPlus } from "lucide-react";
+import { Book, BookPlus, PencilLine } from "lucide-react";
 
 // Skeleton loader for book card
 const BookCardSkeleton = () => (
@@ -153,7 +153,7 @@ function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <div className="container max-w-7xl p-4 md:p-6 mx-auto">
+      <main className="container max-w-7xl p-4 md:p-6 mx-auto">
         <header className="mb-6 md:mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="flex-1">
             <h1 className="text-gray-900 text-xl md:text-2xl font-bold mb-1">
@@ -203,7 +203,7 @@ function DashboardPage() {
             <Button
               type="button"
               onClick={() => setIsCreateBookModalOpen(true)}
-              icon={BookPlus}
+              icon={PencilLine}
             >
               Start Writing
             </Button>
@@ -242,7 +242,7 @@ function DashboardPage() {
           onClose={() => setIsCreateBookModalOpen(false)}
           onBookCreate={handleCreateBook}
         />
-      </div>
+      </main>
     </DashboardLayout>
   );
 }

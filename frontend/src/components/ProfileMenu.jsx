@@ -9,7 +9,7 @@ const ProfileMenu = ({
   email,
   signoutCallback,
 }) => (
-  <div onClick={(event) => event.stopPropagation()} className="relative">
+  <nav onClick={(event) => event.stopPropagation()} className="relative">
     <button
       type="button"
       onClick={onToggle}
@@ -79,7 +79,7 @@ const ProfileMenu = ({
         </div>
       </div>
     )}
-  </div>
+  </nav>
 );
 
 export default ProfileMenu;

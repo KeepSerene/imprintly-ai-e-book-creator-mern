@@ -46,7 +46,7 @@ function Hero() {
                 <img
                   src="/images/hero-image.png"
                   alt="Imprintly AI eBook creation interface"
-                  className="w-full h-auto"
+                  className="w-full h-auto select-none"
                 />
               </div>
 
@@ -85,7 +85,9 @@ function Hero() {
                 to={isAuthenticated ? "/dashboard" : "/login"}
                 className="bg-linear-to-r from-violet-600 to-purple-600 text-white font-semibold rounded-xl px-8 py-4 shadow-lg shadow-violet-500/30 inline-flex items-center gap-x-2 transition-all duration-200 hover:shadow-violet-500/50 hover:scale-101 focus-visible:shadow-violet-500/50 focus-visible:scale-101 group w-full sm:w-auto justify-center"
               >
-                <span>Make Your Imprint</span>
+                <span>
+                  {isAuthenticated ? "Go to Dashboard" : "Make Your Imprint"}
+                </span>
                 <ArrowRight className="size-5 transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1" />
               </Link>
 

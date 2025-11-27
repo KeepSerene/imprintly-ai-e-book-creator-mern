@@ -94,6 +94,7 @@ function Navbar() {
               }}
               avatarUrl={user?.avatar}
               username={user?.name}
+              email={user?.email}
               signoutCallback={handleSignout}
             />
           ) : (
@@ -132,7 +133,7 @@ function Navbar() {
 
       {/* Mobile menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 animate-in slide-in-from-top duration-200">
+        <div className="lg:hidden bg-white/80 backdrop-blur-md border-t border-gray-100 animate-in slide-in-from-top duration-200">
           {/* Navigation */}
           <nav className="p-4 grid grid-cols-1 gap-y-1">
             {navLinks.map(({ label, hash }) => (
@@ -151,30 +152,34 @@ function Navbar() {
           <div className="p-4 border-t border-gray-100">
             {isAuthenticated ? (
               <div className="space-y-3">
+                {/* User info display */}
                 <div className="px-2 flex items-center gap-x-3">
-                  <div className="size-8 bg-linear-to-br from-violet-400 to-violet-500 rounded-xl flex justify-center items-center">
+                  <div className="size-10 bg-linear-to-br from-violet-400 to-violet-500 rounded-xl flex justify-center items-center shrink-0">
                     <span className="text-white text-sm font-semibold">
-                      {user.name.chatAt(0).toUpperCase()}
+                      {user?.name?.[0]?.toUpperCase() ?? "U"}
                     </span>
-
-                    <div>
-                      <p className="text-gray-900 text-sm font-medium">
-                        {user.name}
-                      </p>
-
-                      <p className="text-gray-500 text-xs">{user.email}</p>
-                    </div>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={handleSignout}
-                    className="w-full text-red-600 text-sm font-medium rounded-lg flex justify-center items-center gap-x-2 transition-colors duration-200 hover:bg-red-50 focus-visible:bg-red-50"
-                  >
-                    <LogOut className="size-4" />
-                    <span>Sign Out</span>
-                  </button>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-gray-900 text-sm font-medium truncate">
+                      {user?.name ?? ""}
+                    </p>
+
+                    <p className="text-gray-500 text-xs truncate">
+                      {user?.email ?? ""}
+                    </p>
+                  </div>
                 </div>
+
+                {/* Sign out button */}
+                <button
+                  type="button"
+                  onClick={handleSignout}
+                  className="w-full text-red-600 text-sm font-medium rounded-lg px-4 py-2.5 flex justify-center items-center gap-x-2 transition-colors duration-200 hover:bg-red-50 focus-visible:bg-red-50"
+                >
+                  <LogOut className="size-4" />
+                  <span>Sign Out</span>
+                </button>
               </div>
             ) : (
               <div className="text-center grid grid-cols-1 gap-y-2">

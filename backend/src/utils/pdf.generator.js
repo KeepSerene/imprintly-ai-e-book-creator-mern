@@ -9,6 +9,8 @@ const PDF_CONFIG = {
   fonts: {
     heading: "Helvetica-Bold",
     body: "Helvetica",
+    bodyBold: "Helvetica-Bold",
+    bodyItalic: "Helvetica-Oblique",
     code: "Courier",
   },
   sizes: {
@@ -21,6 +23,7 @@ const PDF_CONFIG = {
     h3: 14,
     body: 11,
     code: 9,
+    pageNumber: 9,
   },
   colors: {
     title: "#1a202c",
@@ -30,8 +33,9 @@ const PDF_CONFIG = {
     heading: "#1a202c",
     body: "#000000",
     code: "#d63384",
-    codeBlock: "#212529",
-    codeBg: "#f8f9fa",
+    codeBlock: "#e2e8f0",
+    codeBg: "#1e293b",
+    pageNumber: "#64748b",
   },
   margins: {
     top: 72,
@@ -44,22 +48,31 @@ const PDF_CONFIG = {
     chapterGap: 40,
     headingGap: 20,
     listItemGap: 8,
+    lineHeight: 1.5,
+  },
+  list: {
+    bulletIndent: 20, // Distance from left margin to bullet
+    textIndent: 35, // Distance from left margin to text (bullet + spacing)
   },
 };
 
-// PARSE INLINE MARKDOWN FOR PDF
+// Parse inline markdown with proper pattern priority
+// Key fix: Bold (**) MUST come before italic (*) to avoid conflicts
 function parseInlineMarkdown(text) {
   const segments = [];
 
+  // Order matters! More specific patterns first
   const patterns = [
-    { regex: /`([^`]+)`/g, type: "code" },
-    { regex: /\*\*(.+?)\*\*/g, type: "bold" },
-    { regex: /\*(.+?)\*/g, type: "italic" },
-    { regex: /__(.+?)__/g, type: "bold" },
-    { regex: /_(.+?)_/g, type: "italic" },
+    { regex: /`([^`]+)`/g, type: "code" }, // Code first (most specific)
+    { regex: /\*\*(.+?)\*\*/g, type: "bold" }, // Bold before italic!
+    { regex: /__(.+?)__/g, type: "bold" }, // Alternative bold
+    { regex: /\*(.+?)\*/g, type: "italic" }, // Italic after bold
+    { regex: /_(.+?)_/g, type: "italic" }, // Alternative italic
   ];
 
   const matches = [];
+
+  // Find all matches from all patterns
   patterns.forEach((pattern) => {
     let match;
     const regex = new RegExp(pattern.regex.source, "g");
@@ -74,10 +87,25 @@ function parseInlineMarkdown(text) {
     }
   });
 
+  // Sort matches by position to process them in order
   matches.sort((a, b) => a.start - b.start);
 
-  let processedUntil = 0;
+  // Remove overlapping matches (keep first match when conflicts occur)
+  const filteredMatches = [];
+  let lastEnd = 0;
+
   matches.forEach((match) => {
+    if (match.start >= lastEnd) {
+      filteredMatches.push(match);
+      lastEnd = match.end;
+    }
+  });
+
+  // Build segments with plain text and styled text
+  let processedUntil = 0;
+
+  filteredMatches.forEach((match) => {
+    // Add plain text before this match
     if (match.start > processedUntil) {
       segments.push({
         text: text.substring(processedUntil, match.start),
@@ -85,6 +113,7 @@ function parseInlineMarkdown(text) {
       });
     }
 
+    // Add styled text
     segments.push({
       text: match.text,
       type: match.type,
@@ -93,6 +122,7 @@ function parseInlineMarkdown(text) {
     processedUntil = match.end;
   });
 
+  // Add remaining plain text
   if (processedUntil < text.length) {
     segments.push({
       text: text.substring(processedUntil),
@@ -103,7 +133,73 @@ function parseInlineMarkdown(text) {
   return segments.length > 0 ? segments : [{ text, type: "plain" }];
 }
 
-// PROCESS MARKDOWN CONTENT FOR PDF
+// Render styled text segments (used for paragraphs and list items)
+function renderStyledText(
+  doc,
+  segments,
+  startX = null,
+  startY = null,
+  options = {}
+) {
+  const defaultOptions = {
+    width: doc.page.width - PDF_CONFIG.margins.left - PDF_CONFIG.margins.right,
+    ...options,
+  };
+
+  let firstSegment = true;
+
+  segments.forEach((segment, index) => {
+    // Set font based on segment type
+    switch (segment.type) {
+      case "code":
+        doc
+          .font(PDF_CONFIG.fonts.code)
+          .fontSize(PDF_CONFIG.sizes.code)
+          .fillColor(PDF_CONFIG.colors.code);
+        break;
+      case "bold":
+        doc
+          .font(PDF_CONFIG.fonts.bodyBold)
+          .fontSize(PDF_CONFIG.sizes.body)
+          .fillColor(PDF_CONFIG.colors.body);
+        break;
+      case "italic":
+        doc
+          .font(PDF_CONFIG.fonts.bodyItalic)
+          .fontSize(PDF_CONFIG.sizes.body)
+          .fillColor(PDF_CONFIG.colors.body);
+        break;
+      default:
+        doc
+          .font(PDF_CONFIG.fonts.body)
+          .fontSize(PDF_CONFIG.sizes.body)
+          .fillColor(PDF_CONFIG.colors.body);
+    }
+
+    // First segment can set position if startX/startY provided
+    if (firstSegment && startX !== null && startY !== null) {
+      doc.text(segment.text, startX, startY, {
+        ...defaultOptions,
+        continued: index < segments.length - 1,
+      });
+      firstSegment = false;
+    } else if (firstSegment && startX !== null) {
+      // Only X position provided (used in lists where Y is already set)
+      doc.text(segment.text, startX, doc.y, {
+        ...defaultOptions,
+        continued: index < segments.length - 1,
+      });
+      firstSegment = false;
+    } else {
+      // Subsequent segments continue naturally
+      doc.text(segment.text, {
+        continued: index < segments.length - 1,
+      });
+    }
+  });
+}
+
+// Process markdown content and render to PDF
 function processMdContentForPdf(doc, mdContent) {
   if (!mdContent || mdContent.trim() === "") {
     return;
@@ -138,6 +234,7 @@ function processMdContentForPdf(doc, mdContent) {
               fontSize = PDF_CONFIG.sizes.h3;
           }
 
+          // Check if we need a new page
           if (doc.y > doc.page.height - PDF_CONFIG.margins.bottom - 100) {
             doc.addPage();
           }
@@ -153,7 +250,7 @@ function processMdContentForPdf(doc, mdContent) {
 
           doc.moveDown(0.5);
 
-          i += 2;
+          i += 2; // Skip heading_open and inline tokens
           continue;
         }
       }
@@ -164,22 +261,41 @@ function processMdContentForPdf(doc, mdContent) {
           .split("\n")
           .filter((line) => line.trim());
 
+        // Check if we need a new page
         if (doc.y > doc.page.height - PDF_CONFIG.margins.bottom - 150) {
           doc.addPage();
         }
 
         doc.moveDown(0.5);
 
+        // Add language label if present
+        if (token.info && token.info.trim()) {
+          doc
+            .font(PDF_CONFIG.fonts.body)
+            .fontSize(8)
+            .fillColor("#64748b")
+            .text(
+              `Language: ${token.info.trim()}`,
+              PDF_CONFIG.margins.left + 20,
+              doc.y,
+              { lineBreak: false }
+            );
+          doc.moveDown(0.3);
+        }
+
+        // Render each line of code with background
         codeLines.forEach((line) => {
-          const lineHeight = PDF_CONFIG.sizes.code + 4;
+          const lineHeight = PDF_CONFIG.sizes.code + 6;
+
+          // Draw dark background for code blocks
           doc
             .rect(
-              PDF_CONFIG.margins.left + 20,
+              PDF_CONFIG.margins.left + 10,
               doc.y,
               doc.page.width -
                 PDF_CONFIG.margins.left -
                 PDF_CONFIG.margins.right -
-                40,
+                20,
               lineHeight
             )
             .fill(PDF_CONFIG.colors.codeBg);
@@ -188,7 +304,7 @@ function processMdContentForPdf(doc, mdContent) {
             .font(PDF_CONFIG.fonts.code)
             .fontSize(PDF_CONFIG.sizes.code)
             .fillColor(PDF_CONFIG.colors.codeBlock)
-            .text(line || " ", PDF_CONFIG.margins.left + 30, doc.y, {
+            .text(line || " ", PDF_CONFIG.margins.left + 20, doc.y, {
               lineBreak: false,
             });
 
@@ -205,50 +321,20 @@ function processMdContentForPdf(doc, mdContent) {
         const nextToken = tokens[i + 1];
 
         if (nextToken && nextToken.type === "inline" && nextToken.content) {
+          // Check if we need a new page
           if (doc.y > doc.page.height - PDF_CONFIG.margins.bottom - 100) {
             doc.addPage();
           }
 
           doc.moveDown(0.5);
 
-          doc
-            .font(PDF_CONFIG.fonts.body)
-            .fontSize(PDF_CONFIG.sizes.body)
-            .fillColor(PDF_CONFIG.colors.body);
-
+          // Parse and render styled text using helper function
           const segments = parseInlineMarkdown(nextToken.content);
-          segments.forEach((segment) => {
-            if (segment.type === "code") {
-              doc
-                .font(PDF_CONFIG.fonts.code)
-                .fontSize(PDF_CONFIG.sizes.code)
-                .fillColor(PDF_CONFIG.colors.code)
-                .text(segment.text, { continued: true });
-            } else if (segment.type === "bold") {
-              doc
-                .font("Helvetica-Bold")
-                .fontSize(PDF_CONFIG.sizes.body)
-                .fillColor(PDF_CONFIG.colors.body)
-                .text(segment.text, { continued: true });
-            } else if (segment.type === "italic") {
-              doc
-                .font("Helvetica-Oblique")
-                .fontSize(PDF_CONFIG.sizes.body)
-                .fillColor(PDF_CONFIG.colors.body)
-                .text(segment.text, { continued: true });
-            } else {
-              doc
-                .font(PDF_CONFIG.fonts.body)
-                .fontSize(PDF_CONFIG.sizes.body)
-                .fillColor(PDF_CONFIG.colors.body)
-                .text(segment.text, { continued: true });
-            }
-          });
+          renderStyledText(doc, segments); // Now using the helper!
 
-          doc.text("");
           doc.moveDown(0.5);
 
-          i += 2;
+          i += 2; // Skip paragraph_open and inline tokens
           continue;
         }
       }
@@ -266,39 +352,36 @@ function processMdContentForPdf(doc, mdContent) {
               i++;
 
               if (tokens[i] && tokens[i].type === "inline") {
-                const segments = parseInlineMarkdown(tokens[i].content);
+                // Check if we need a new page
+                if (doc.y > doc.page.height - PDF_CONFIG.margins.bottom - 50) {
+                  doc.addPage();
+                }
 
+                const currentY = doc.y;
+                const bulletX =
+                  PDF_CONFIG.margins.left + PDF_CONFIG.list.bulletIndent;
+                const textX =
+                  PDF_CONFIG.margins.left + PDF_CONFIG.list.textIndent;
+
+                // Render bullet separately at fixed position
                 doc
                   .font(PDF_CONFIG.fonts.body)
                   .fontSize(PDF_CONFIG.sizes.body)
                   .fillColor(PDF_CONFIG.colors.body)
-                  .text("• ", PDF_CONFIG.margins.left + 20, doc.y, {
-                    continued: true,
+                  .text("•", bulletX, currentY, {
+                    lineBreak: false,
+                    width: 10,
                   });
 
-                segments.forEach((segment) => {
-                  if (segment.type === "code") {
-                    doc
-                      .font(PDF_CONFIG.fonts.code)
-                      .fontSize(PDF_CONFIG.sizes.code)
-                      .fillColor(PDF_CONFIG.colors.code);
-                  } else if (segment.type === "bold") {
-                    doc.font("Helvetica-Bold").fontSize(PDF_CONFIG.sizes.body);
-                  } else if (segment.type === "italic") {
-                    doc
-                      .font("Helvetica-Oblique")
-                      .fontSize(PDF_CONFIG.sizes.body);
-                  } else {
-                    doc
-                      .font(PDF_CONFIG.fonts.body)
-                      .fontSize(PDF_CONFIG.sizes.body);
-                  }
-                  doc.fillColor(PDF_CONFIG.colors.body);
-                  doc.text(segment.text, { continued: true });
+                // Parse list item content for inline styles
+                const segments = parseInlineMarkdown(tokens[i].content);
+
+                // Render text at fixed indent using helper function
+                renderStyledText(doc, segments, textX, currentY, {
+                  width: doc.page.width - textX - PDF_CONFIG.margins.right,
                 });
 
-                doc.text("");
-                doc.moveDown(0.3);
+                doc.moveDown(0.4);
               }
             }
           }
@@ -324,44 +407,36 @@ function processMdContentForPdf(doc, mdContent) {
               i++;
 
               if (tokens[i] && tokens[i].type === "inline") {
-                const segments = parseInlineMarkdown(tokens[i].content);
+                // Check if we need a new page
+                if (doc.y > doc.page.height - PDF_CONFIG.margins.bottom - 50) {
+                  doc.addPage();
+                }
 
+                const currentY = doc.y;
+                const numberX =
+                  PDF_CONFIG.margins.left + PDF_CONFIG.list.bulletIndent;
+                const textX =
+                  PDF_CONFIG.margins.left + PDF_CONFIG.list.textIndent;
+
+                // Render number separately at fixed position
                 doc
                   .font(PDF_CONFIG.fonts.body)
                   .fontSize(PDF_CONFIG.sizes.body)
                   .fillColor(PDF_CONFIG.colors.body)
-                  .text(
-                    `${listCounter}. `,
-                    PDF_CONFIG.margins.left + 20,
-                    doc.y,
-                    {
-                      continued: true,
-                    }
-                  );
+                  .text(`${listCounter}.`, numberX, currentY, {
+                    lineBreak: false,
+                    width: 15,
+                  });
 
-                segments.forEach((segment) => {
-                  if (segment.type === "code") {
-                    doc
-                      .font(PDF_CONFIG.fonts.code)
-                      .fontSize(PDF_CONFIG.sizes.code)
-                      .fillColor(PDF_CONFIG.colors.code);
-                  } else if (segment.type === "bold") {
-                    doc.font("Helvetica-Bold").fontSize(PDF_CONFIG.sizes.body);
-                  } else if (segment.type === "italic") {
-                    doc
-                      .font("Helvetica-Oblique")
-                      .fontSize(PDF_CONFIG.sizes.body);
-                  } else {
-                    doc
-                      .font(PDF_CONFIG.fonts.body)
-                      .fontSize(PDF_CONFIG.sizes.body);
-                  }
-                  doc.fillColor(PDF_CONFIG.colors.body);
-                  doc.text(segment.text, { continued: true });
+                // Parse list item content for inline styles
+                const segments = parseInlineMarkdown(tokens[i].content);
+
+                // Render text at fixed indent using helper function
+                renderStyledText(doc, segments, textX, currentY, {
+                  width: doc.page.width - textX - PDF_CONFIG.margins.right,
                 });
 
-                doc.text("");
-                doc.moveDown(0.3);
+                doc.moveDown(0.4);
                 listCounter++;
               }
             }
@@ -382,14 +457,13 @@ function processMdContentForPdf(doc, mdContent) {
   }
 }
 
-// GENERATE PDF AND STREAM TO RESPONSE
+// MAIN PDF GENERATION FUNCTION
 async function generatePdf(book, res) {
   return new Promise((resolve, reject) => {
     try {
       const doc = new PDFDocument({
         size: "A4",
         margins: PDF_CONFIG.margins,
-        bufferPages: true,
       });
 
       doc.pipe(res);
@@ -399,7 +473,7 @@ async function generatePdf(book, res) {
         reject(err);
       });
 
-      // COVER PAGE
+      // PAGE 1: COVER PAGE
       if (book.coverImage && !book.coverImage.includes("pravatar")) {
         const rel = book.coverImage.replace(/^\//, "");
         const imagePath = path.join(__dirname, "../../", rel);
@@ -421,7 +495,7 @@ async function generatePdf(book, res) {
         }
       }
 
-      // TITLE PAGE
+      // PAGE 2: TITLE PAGE
       doc.moveDown(8);
 
       doc
@@ -459,7 +533,7 @@ async function generatePdf(book, res) {
         .lineTo(doc.page.width / 2 + 100, doc.y)
         .stroke("#4f46e5");
 
-      // PROCESS CHAPTERS
+      // PROCESS CHAPTERS (starts on page 3+)
       (book?.chapters || []).forEach((chapter, index) => {
         try {
           doc.addPage();

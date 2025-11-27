@@ -35,7 +35,11 @@ const Button = ({
   <button
     disabled={isLoading || disabled}
     aria-label={ariaLabel}
-    className={`font-medium whitespace-nowrap inline-flex justify-center items-center transition-all duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed ${variants[variant]} ${sizes[size]} ${className}`}
+    className={`font-medium whitespace-nowrap inline-flex justify-center items-center ${
+      children ? "gap-2" : ""
+    } transition-all duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed ${
+      variants[variant]
+    } ${sizes[size]} ${className}`}
     {...props}
   >
     {isLoading ? (
@@ -43,9 +47,7 @@ const Button = ({
     ) : (
       <>
         {ButtonIcon && <ButtonIcon className="size-4" />}
-        {children && (
-          <span className={ButtonIcon ? "ml-2" : ""}>{children}</span>
-        )}
+        {children && <span>{children}</span>}
       </>
     )}
   </button>

@@ -94,7 +94,9 @@ function Features() {
             to={isAuthenticated ? "/dashboard" : "/login"}
             className="bg-linear-to-r from-violet-600 to-purple-600 text-white text-sm sm:text-base font-semibold rounded-xl px-6 sm:px-8 py-3 sm:py-4 shadow-lg shadow-violet-500/30 inline-flex items-center gap-x-2 transition-all duration-200 hover:shadow-violet-500/50 hover:scale-101 focus-visible:shadow-violet-500/50 focus-visible:scale-101 group"
           >
-            <span>Launch Your First Book</span>
+            <span>
+              {isAuthenticated ? "My Writing Space" : "Launch Your First Book"}
+            </span>
             <ArrowRight className="size-4 sm:size-5 transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1" />
           </Link>
         </footer>

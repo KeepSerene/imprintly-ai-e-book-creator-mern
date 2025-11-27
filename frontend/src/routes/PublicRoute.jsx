@@ -1,11 +1,9 @@
 import { useAuthContext } from "../contexts/AuthContext";
-import { Navigate, useLocation } from "react-router";
+import { Navigate } from "react-router";
 
-function ProtectedRoute({ children }) {
+function PublicRoute({ children }) {
   const { isLoading, isAuthenticated } = useAuthContext();
-  const location = useLocation();
 
-  // loading state while checking authentication
   if (isLoading) {
     return (
       <main className="h-screen flex items-center justify-center bg-slate-50">
@@ -17,11 +15,11 @@ function ProtectedRoute({ children }) {
     );
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;
 }
 
-export default ProtectedRoute;
+export default PublicRoute;
