@@ -178,7 +178,7 @@ pnpm run dev
 
 ---
 
-## 📁 Project Structure
+## 📁 Project Structure (Tentative!)
 
 ```
 imprintly/
@@ -202,7 +202,6 @@ imprintly/
 │   │   ├── utils/           # Utilities
 │   │   └── main.jsx         # App entry point
 │   └── package.json
-├── uploads/                 # User uploaded files
 └── package.json             # Root package file
 ```
 
