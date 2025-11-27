@@ -33,6 +33,18 @@ app.use("/api/exports", exportsRouter);
 // Static folder for user uploads - serve from backend/uploads
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
+// PRODUCTION: serve React frontend
+if (ENV.NODE_ENV === "production") {
+  // serve static files from the React build
+  app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+
+  // catch-all route: for any route not matched above, serve index.html
+  // this allows React Router to handle routing on the client side
+  app.get("/{*any}", (_, res) => {
+    res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
+  });
+}
+
 // ERROR HANDLING - Multer specific errors
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {

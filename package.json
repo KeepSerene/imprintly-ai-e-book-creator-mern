@@ -1,14 +1,23 @@
 {
   "name": "imprintly",
   "version": "1.0.0",
-  "description": "",
+  "description": "AI-powered eBook creation platform",
   "main": "index.js",
   "scripts": {
     "build": "cd backend && pnpm install && cd ../frontend && pnpm install && pnpm run build",
     "start": "cd backend && pnpm start"
   },
-  "keywords": [],
+  "keywords": [
+    "ebook",
+    "ai",
+    "publishing",
+    "mern"
+  ],
   "author": "Dhrubajyoti Bhattacharjee",
   "license": "Apache-2.0",
-  "packageManager": "pnpm@10.22.0"
+  "packageManager": "pnpm@10.22.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=9.0.0"
+  }
 }
