@@ -89,22 +89,22 @@ Imprintly is a full-stack MERN application that revolutionizes the eBook creatio
 
 ### Landing Page
 
-![Landing Page](screenshots/landing-page.png)
+![Landing Page](./frontend/public/screenshots/landing-page.png)
 _Beautiful, modern landing page with gradient designs and smooth animations_
 
 ### Dashboard
 
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](./frontend/public/screenshots/dashboard.png)
 _Manage all your books in one place with an intuitive card-based layout_
 
 ### Book Editor
 
-![Book Editor](screenshots/book-editor.png)
+![Book Editor](./frontend/public/screenshots/editor.png)
 _Rich markdown editor with live preview and AI-powered content generation_
 
 ### AI Content Generation
 
-![AI Generation](screenshots/ai-generation.png)
+![AI Generation](./frontend/public/screenshots/ai-generation.png)
 _Generate book outlines and chapter content with AI assistance_
 
 ---
@@ -123,7 +123,7 @@ _Generate book outlines and chapter content with AI assistance_
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/KeepSerene/imprintly.git
+git clone https://github.com/KeepSerene/imprintly-ai-e-book-creator-mern.git
 cd imprintly
 ```
 
@@ -243,14 +243,12 @@ imprintly/
 
 ## 🌐 Deployment
 
-This project is configured for deployment on Render.com. The build process automatically:
+This project is configured for deployment on [Render.com](https://render.com/). The build process automatically:
 
 1. Installs all dependencies using pnpm
 2. Builds the React frontend
 3. Serves the frontend from the Express backend in production
 4. Handles all routing through React Router
-
-See the deployment guide in the repository for detailed instructions.
 
 ---
 
@@ -312,6 +310,6 @@ This is a portfolio project demonstrating full-stack MERN development skills wit
 
 ⭐ Star this repo if you found it helpful!
 
-[Live Demo](https://imprintly.onrender.com) • [Report Bug](https://github.com/KeepSerene/imprintly/issues) • [Request Feature](https://github.com/KeepSerene/imprintly/issues)
+[Live Demo](https://imprintly.onrender.com) • [Report Bug](https://github.com/KeepSerene/imprintly-ai-e-book-creator-mern/issues) • [Request Feature](https://github.com/KeepSerene/imprintly-ai-e-book-creator-mern/issues)
 
 </div>

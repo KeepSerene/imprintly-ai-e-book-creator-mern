@@ -52,4 +52,15 @@ const uploadBookCoverImage = multer({
   },
 }).single("coverImage");
 
-module.exports = { uploadBookCoverImage };
+const uploadAvatarImage = multer({
+  storage: storageEngine,
+  limits: {
+    files: 1,
+    fileSize: 2 * 1024 * 1024, // 2MB limit
+  },
+  fileFilter(req, file, callback) {
+    checkFileType(file, callback);
+  },
+}).single("avatar");
+
+module.exports = { uploadBookCoverImage, uploadAvatarImage };

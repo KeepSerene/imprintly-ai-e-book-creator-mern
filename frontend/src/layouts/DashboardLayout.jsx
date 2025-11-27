@@ -49,7 +49,7 @@ function DashboardLayout({ children }) {
             event.stopPropagation();
             setIsProfileMenuOpen(!isProfileMenuOpen);
           }}
-          avatarUrl={user?.avatarUrl || ""}
+          avatarUrl={user?.avatar || ""}
           username={user?.name || ""}
           email={user?.email || ""}
           signoutCallback={handleSignout}

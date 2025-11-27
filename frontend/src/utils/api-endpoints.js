@@ -10,6 +10,8 @@ export const API_ENDPOINTS = {
   PROFILE: {
     GET: "/api/profile",
     EDIT: "/api/profile",
+    UPLOAD_AVATAR: "/api/profile/avatar",
+    DELETE_AVATAR: "/api/profile/avatar",
   },
   BOOKS: {
     GET_ALL: "/api/books",
