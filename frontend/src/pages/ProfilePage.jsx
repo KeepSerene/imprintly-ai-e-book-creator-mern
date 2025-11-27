@@ -62,7 +62,7 @@ function ProfilePage() {
 
     try {
       const { data } = await axiosInstance.put(API_ENDPOINTS.PROFILE.EDIT, {
-        name: formData.name,
+        name: trimmedData.name,
       });
       updateUser(data.user);
       toast.success("Your profile name has been updated successfully!", {

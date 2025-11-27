@@ -6,16 +6,8 @@ function ErrorPage() {
   const navigate = useNavigate();
   const [showDetails, setShowDetails] = useState(false);
 
-  let error = null;
-  let isErrorBoundary = false;
-
-  try {
-    error = useRouteError();
-    isErrorBoundary = true; // we're in error boundary
-  } catch (e) {
-    // this is a regular 404 from catch-all route
-    isErrorBoundary = false;
-  }
+  const error = useRouteError();
+  const isErrorBoundary = error != null;
 
   let is404 = false;
   let errorTitle = "Something Went Wrong";

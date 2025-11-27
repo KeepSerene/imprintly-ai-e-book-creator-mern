@@ -40,6 +40,7 @@ const DOCX_CONFIG = {
     code: "d63384",
     codeBlock: "e2e8f0",
     codeBg: "1e293b",
+    inlineCodeBg: "f1f5f9",
   },
   spacing: {
     paragraphBefore: 200,
@@ -111,7 +112,7 @@ function processInlineContent(content) {
       runOptions.size = DOCX_CONFIG.sizes.code * 2;
       runOptions.color = DOCX_CONFIG.colors.code;
       runOptions.shading = {
-        fill: "f1f5f9",
+        fill: DOCX_CONFIG.colors.inlineCodeBg,
         type: "clear",
       };
     }

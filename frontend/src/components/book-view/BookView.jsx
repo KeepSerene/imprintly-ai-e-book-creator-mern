@@ -8,6 +8,14 @@ function BookView({ book }) {
   const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
   const [fontSize, setFontSize] = useState(18);
 
+  if (!book.chapters || book.chapters.length === 0) {
+    return (
+      <main className="h-[calc(100vh-64px)] bg-white flex items-center justify-center">
+        <p className="text-gray-500">No chapters available.</p>
+      </main>
+    );
+  }
+
   const selectedChapter = book.chapters[selectedChapterIndex];
 
   return (
