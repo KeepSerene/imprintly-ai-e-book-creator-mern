@@ -124,15 +124,12 @@ _Generate book outlines and chapter content with AI assistance_
 
 ```bash
 git clone https://github.com/KeepSerene/imprintly-ai-e-book-creator-mern.git
-cd imprintly
+cd imprintly-ai-e-book-creator-mern
 ```
 
 2. **Install dependencies**
 
 ```bash
-# Install root dependencies
-pnpm install
-
 # Install backend dependencies
 cd backend
 pnpm install
@@ -218,6 +215,8 @@ imprintly/
 
 - `GET /api/profile` - Get user profile
 - `PUT /api/profile` - Update user profile
+- `PUT /api/profile/avatar` - Update user avatar
+- `DELETE /api/profile/avatar` - Delete user avatar
 
 ### Books
 

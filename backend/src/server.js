@@ -46,7 +46,7 @@ if (ENV.NODE_ENV === "production") {
 }
 
 // ERROR HANDLING - Multer specific errors
-app.use((err, req, res, next) => {
+app.use((err, _, res, next) => {
   if (err instanceof multer.MulterError) {
     if (err.code === "LIMIT_FILE_SIZE") {
       return res
@@ -62,7 +62,7 @@ app.use((err, req, res, next) => {
 });
 
 // GENERAL ERROR HANDLER
-app.use((err, req, res, next) => {
+app.use((err, _, res, next) => {
   console.error("Unhandled error:", err);
 
   // don't send another response if headers already sent
